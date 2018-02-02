@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Current</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_maps">Current</string>
+    <string name="post_text">Post</string>
+    <string name="settings_text">Settings</string>
+    <string name="events_text">Events</string>
 </resources>

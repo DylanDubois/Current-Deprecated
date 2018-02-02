@@ -2,17 +2,24 @@ package com.current.duboi.current;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private Button eventsButton;
+    private Button postButton;
+    private Button settingsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +29,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        eventsButton = findViewById(R.id.eventsButton);
+        eventsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Current", "Events Clicked");
+            }
+        });
+
+        postButton = findViewById(R.id.postButton);
+        postButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Current", "Post Clicked");
+            }
+        });
+
+        settingsButton = findViewById(R.id.settingsButton);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Current", "Settings Clicked");
+            }
+        });
     }
 
 
@@ -39,8 +69,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(30.4, -91.18);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng lsuMarker = new LatLng(30.4133, -91.18);
+        LatLngBounds LSU = new LatLngBounds(new LatLng(30.15, -91.35), new LatLng(30.55, -91.1));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(LSU,0));
+        mMap.addMarker(new MarkerOptions().position(lsuMarker).title("Marker at LSU"));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
     }
 }
