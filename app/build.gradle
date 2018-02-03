@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.current.duboi.current"
+        applicationId "com.current.android.current"
         minSdkVersion 17
         targetSdkVersion 26
         versionCode 1
@@ -26,4 +26,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.google.firebase:firebase-database:11.8.0'
+    compile'com.google.firebase:firebase-auth:11.8.0'
+    compile 'com.android.support:support-annotations:27.0.2'
 }
+
+apply plugin: 'com.google.gms.google-services'
