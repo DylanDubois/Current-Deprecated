@@ -1,4 +1,4 @@
-package com.current.duboi.current;
+package com.current.android.current;
 
 import org.junit.Test;
 

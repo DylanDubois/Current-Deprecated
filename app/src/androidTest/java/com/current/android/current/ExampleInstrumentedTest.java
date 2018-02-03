@@ -1,4 +1,4 @@
-package com.current.duboi.current;
+package com.current.android.current;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

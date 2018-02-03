@@ -1,4 +1,4 @@
-package com.current.duboi.current;
+package com.current.android.current;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
