@@ -2,6 +2,7 @@ package com.current.android.current;
 
 import android.*;
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -91,10 +92,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Add a marker in Sydney and move the camera
         LatLng lsuMarker = new LatLng(30.4133, -91.18);
         LatLngBounds LSU = new LatLngBounds(new LatLng(30.15, -91.35), new LatLng(30.55, -91.1));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(LSU,0));
         mMap.addMarker(new MarkerOptions().position(lsuMarker).title("Marker at LSU"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(lsuMarker));
 
+        Log.d("Current", "onMapReady() end");
+        getCurrentUserLocation();
     }
 
     @Override
@@ -104,12 +106,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getCurrentUserLocation();
     }
 
+    private Location userLocation;
+
     private void getCurrentUserLocation() {
+        Log.d("Current", "getCurrentUserLocation() Called");
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 Log.d("Current", "onLocationChanged()");
+                String longitude = String.valueOf(location.getLongitude());
+                String latitude = String.valueOf(location.getLatitude());
+                Log.d("Current", "Latitude = " + latitude + "\nLongitude = " + longitude);
             }
 
             @Override
@@ -142,7 +150,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         locationManager.requestLocationUpdates(LOCATION_PROVIDER, MIN_TIME, MIN_DISTANCE, locationListener);
+        if (mMap != null){
+            Log.d("Current", "Map != null");
+            userLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            Log.d("Current Test", "Latitude = " + userLocation.getLatitude()
+                    + "\nLongitude = " + userLocation.getLongitude());
+            mMap.setMyLocationEnabled(true);
 
+        }
 
     }
 
@@ -155,7 +170,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d("Current", "onReqPermission = granted");
             }
             else{
-                Log.d("Current", "Permission denied ;(");
+                Log.d("Current", "Permission denied");
             }
         }
     }
