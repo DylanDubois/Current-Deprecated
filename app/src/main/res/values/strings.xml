@@ -4,4 +4,13 @@
     <string name="post_text">Post</string>
     <string name="settings_text">Settings</string>
     <string name="events_text">Events</string>
+    <string name="event_name">Event Name</string>
+    <string name="event_description">Description</string>
+    <string name="event_type">Event Type</string>
+    <string name="cancel">Cancel</string>
+    <string-array name="event_types">
+        <item>Academic</item>
+        <item>Entertainment</item>
+        <item>Social</item>
+    </string-array>
 </resources>

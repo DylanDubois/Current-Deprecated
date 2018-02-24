@@ -12,12 +12,22 @@ public class EventPost {
     private String eventDescription;
     private String author;
     private LatLng location;
+    private String eventType;
 
-    public EventPost(String eventName, String eventDescription, String author, LatLng location) {
+    public EventPost(String eventName, String eventDescription, String author, LatLng location, String type) {
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.author = author;
         this.location = location;
+        this.eventType = type;
+    }
+
+    public String getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
     }
 
     public String getEventName() {
