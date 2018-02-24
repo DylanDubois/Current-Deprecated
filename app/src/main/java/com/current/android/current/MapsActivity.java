@@ -4,6 +4,7 @@ import android.*;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -41,6 +42,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private final int REQUEST_CODE = 123;
     private final long MIN_TIME = 500;
     private final float MIN_DISTANCE = 2;
+    private final float DEFAULT_ZOOM = 15;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 Log.d("Current", "Post Clicked");
+                Intent intent = new Intent(getApplicationContext(), PostActivity.class);
+                if (userLocation != null){
+                    intent.putExtra("USER_LONGITUDE",userLocation.getLongitude());
+                    intent.putExtra("USER_LATITUDE",userLocation.getLatitude());
+                }
+                finish();
+                startActivity(intent);
+
+
             }
         });
 
@@ -91,7 +102,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         LatLng lsuMarker = new LatLng(30.4133, -91.18);
-        LatLngBounds LSU = new LatLngBounds(new LatLng(30.15, -91.35), new LatLng(30.55, -91.1));
         mMap.addMarker(new MarkerOptions().position(lsuMarker).title("Marker at LSU"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(lsuMarker));
 
@@ -155,7 +165,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             userLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             Log.d("Current Test", "Latitude = " + userLocation.getLatitude()
                     + "\nLongitude = " + userLocation.getLongitude());
-            mMap.setMyLocationEnabled(true);
+            //mMap.setMyLocationEnabled(true);
+            LatLngBounds userBounds = new LatLngBounds(new LatLng(userLocation.getLatitude() - 0.05,
+                    userLocation.getLongitude() -0.05),
+                    new LatLng(userLocation.getLatitude() + 0.05,
+                            userLocation.getLongitude() +0.05));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userBounds.getCenter(),DEFAULT_ZOOM));
+
+
 
         }
 
