@@ -77,6 +77,20 @@ public class PostActivity extends AppCompatActivity{
         Log.d("Current","Event name: "+eventName.getText().toString() +
                 "\nEvent Description: "+eventDescription.getText().toString()+
                 "\nEvent Type: " + eventType);
+        EventPost eventPost = new EventPost(eventName.getText().toString(),
+                eventDescription.getText().toString(), "Mike Mikerson", userLocation,
+                eventType);
+        Log.d("Current", "Event Posted? " + eventPost.getEventName());
+
+        Intent postIntent = new Intent(getApplicationContext(), MapsActivity.class);
+        postIntent.putExtra("EVENT_NAME", eventPost.getEventName());
+        postIntent.putExtra("EVENT_DESCRIPTION", eventPost.getEventDescription());
+        postIntent.putExtra("EVENT_LONGITUDE", eventPost.getLocation().longitude);
+        postIntent.putExtra("EVENT_LATITUDE", eventPost.getLocation().latitude);
+        postIntent.putExtra("EVENT_AUTHOR", eventPost.getAuthor());
+        postIntent.putExtra("EVENT_TYPE", eventPost.getEventType());
+        finish();
+        startActivity(postIntent);
 
 
     }

@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.EventLog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -48,6 +49,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        Intent mapsIntent = getIntent();
+        if (mapsIntent.getExtras() != null){
+            Log.d("Current", "Maps intent != null \n");
+            Bundle eventInfo = mapsIntent.getExtras();
+            EventPost eventTest = new EventPost(eventInfo.getString("EVENT_NAME"),
+                    eventInfo.getString("EVENT_DESCRIPTION"),
+                    eventInfo.getString("EVENT_AUTHOR"),
+                    new LatLng(eventInfo.getDouble("EVENT_LONGITUDE"),
+                            eventInfo.getDouble("EVENT_LATITUDE")),
+                    eventInfo.getString("EVENT_TYPE"));
+//            eventTest.setLocation(new LatLng(eventInfo.getDouble("EVENT_LONGITUDE"),
+//                    eventInfo.getDouble("EVENT_LATITUDE")));
+//            eventTest.setEventName(eventInfo.getString("EVENT_NAME"));
+            Log.d("Current", "Event Name = " + eventTest.getEventName());
+
+
+
+        }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);

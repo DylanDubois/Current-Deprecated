@@ -1,5 +1,8 @@
 package com.current.android.current;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.android.gms.maps.model.LatLng;
 
 /**
@@ -14,12 +17,16 @@ public class EventPost {
     private LatLng location;
     private String eventType;
 
+
     public EventPost(String eventName, String eventDescription, String author, LatLng location, String type) {
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.author = author;
         this.location = location;
         this.eventType = type;
+    }
+    public EventPost(){
+
     }
 
     public String getEventType() {
@@ -61,4 +68,6 @@ public class EventPost {
     public void setLocation(LatLng location) {
         this.location = location;
     }
+
+
 }
