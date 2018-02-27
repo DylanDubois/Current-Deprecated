@@ -24,7 +24,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -44,29 +47,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private final long MIN_TIME = 500;
     private final float MIN_DISTANCE = 2;
     private final float DEFAULT_ZOOM = 15;
+    private EventPost eventTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        Intent mapsIntent = getIntent();
-        if (mapsIntent.getExtras() != null){
-            Log.d("Current", "Maps intent != null \n");
-            Bundle eventInfo = mapsIntent.getExtras();
-            EventPost eventTest = new EventPost(eventInfo.getString("EVENT_NAME"),
-                    eventInfo.getString("EVENT_DESCRIPTION"),
-                    eventInfo.getString("EVENT_AUTHOR"),
-                    new LatLng(eventInfo.getDouble("EVENT_LONGITUDE"),
-                            eventInfo.getDouble("EVENT_LATITUDE")),
-                    eventInfo.getString("EVENT_TYPE"));
-//            eventTest.setLocation(new LatLng(eventInfo.getDouble("EVENT_LONGITUDE"),
-//                    eventInfo.getDouble("EVENT_LATITUDE")));
-//            eventTest.setEventName(eventInfo.getString("EVENT_NAME"));
-            Log.d("Current", "Event Name = " + eventTest.getEventName());
 
-
-
-        }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -119,12 +106,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng lsuMarker = new LatLng(30.4133, -91.18);
-        mMap.addMarker(new MarkerOptions().position(lsuMarker).title("Marker at LSU"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(lsuMarker));
-
-        Log.d("Current", "onMapReady() end");
+        if (EventPost.eventsArray.size() > 0){
+            Log.d("Current", "EventsArray != null");
+            EventPost.placeEventMarkers(mMap);
+        }
         getCurrentUserLocation();
     }
 
@@ -135,18 +120,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getCurrentUserLocation();
     }
 
+
     private Location userLocation;
 
     private void getCurrentUserLocation() {
-        Log.d("Current", "getCurrentUserLocation() Called");
+        //Log.d("Current", "getCurrentUserLocation() Called");
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                Log.d("Current", "onLocationChanged()");
+                //Log.d("Current", "onLocationChanged()");
                 String longitude = String.valueOf(location.getLongitude());
                 String latitude = String.valueOf(location.getLatitude());
-                Log.d("Current", "Latitude = " + latitude + "\nLongitude = " + longitude);
+                //Log.d("Current", "Latitude = " + latitude + "\nLongitude = " + longitude);
             }
 
             @Override

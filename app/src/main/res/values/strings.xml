@@ -12,5 +12,6 @@
         <item>Academic</item>
         <item>Entertainment</item>
         <item>Social</item>
+        <item>Other</item>
     </string-array>
 </resources>

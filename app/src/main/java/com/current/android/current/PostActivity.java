@@ -14,6 +14,8 @@ import android.widget.Spinner;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.Random;
+
 public class PostActivity extends AppCompatActivity{
     private LatLng userLocation;
     private Spinner eventTypeSpinner;
@@ -30,8 +32,8 @@ public class PostActivity extends AppCompatActivity{
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            userLocation = new LatLng(extras.getDouble("USER_LONGITUDE"),
-                    extras.getDouble("USER_LATITUDE"));
+            userLocation = new LatLng(extras.getDouble("USER_LATITUDE"),
+                    extras.getDouble("USER_LONGITUDE"));
         }
         Log.d("Current", "User is at " + userLocation);
         eventTypeSpinner = (Spinner) findViewById(R.id.eventTypeSpinner);
@@ -39,9 +41,10 @@ public class PostActivity extends AppCompatActivity{
                 R.array.event_types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         eventTypeSpinner.setAdapter(adapter);
+
+        //initialize post screen buttons/text fields
         cancelButton = (Button) findViewById(R.id.cancelButton);
         postButton = (Button) findViewById(R.id.postButton);
-
         eventName = (EditText) findViewById(R.id.eventNameText);
         eventDescription = (EditText) findViewById(R.id.eventDescriptionText);
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -73,22 +76,23 @@ public class PostActivity extends AppCompatActivity{
             }
         });
     }
+    // Random location used for testing. Not permanent!!!
+    Random random = new Random();
     private void postPressed(){
         Log.d("Current","Event name: "+eventName.getText().toString() +
                 "\nEvent Description: "+eventDescription.getText().toString()+
                 "\nEvent Type: " + eventType);
         EventPost eventPost = new EventPost(eventName.getText().toString(),
-                eventDescription.getText().toString(), "Mike Mikerson", userLocation,
+                // Remove!!!
+                eventDescription.getText().toString(), "Mike Mikerson", new LatLng(30 + (1) *random.nextDouble(), -91 + 1 *random.nextDouble()),
                 eventType);
         Log.d("Current", "Event Posted? " + eventPost.getEventName());
 
+        // Adds directly from post class only for testing purposes.
+        EventPost.eventsArray.add(eventPost);
+
         Intent postIntent = new Intent(getApplicationContext(), MapsActivity.class);
-        postIntent.putExtra("EVENT_NAME", eventPost.getEventName());
-        postIntent.putExtra("EVENT_DESCRIPTION", eventPost.getEventDescription());
-        postIntent.putExtra("EVENT_LONGITUDE", eventPost.getLocation().longitude);
-        postIntent.putExtra("EVENT_LATITUDE", eventPost.getLocation().latitude);
-        postIntent.putExtra("EVENT_AUTHOR", eventPost.getAuthor());
-        postIntent.putExtra("EVENT_TYPE", eventPost.getEventType());
+
         finish();
         startActivity(postIntent);
 
