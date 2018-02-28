@@ -1,12 +1,19 @@
 package com.current.android.current;
 
+import android.content.Context;
+import android.provider.ContactsContract;
 import android.util.EventLog;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.PopupWindow;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -32,20 +39,22 @@ public class Tester {
     }
 
     // i.e. eventsPosterTester(), etc
-    private static String[] eventNames = {"Art Study Session", "Hannah Montana Concert", "Sorority Hazing"};
-    private static String[] eventTypes = {"Academic", "Entertainment", "Social"};
+    private static String[] eventNames = {"Art Study Session", "Hannah Montana Concert", "Sorority Hazing", "UFO Sighting"};
+    private static String[] eventTypes = {"Academic", "Entertainment", "Social", "Other"};
     private static Random random = new Random();
 
     public static void postRandomEvents(GoogleMap map){
         int randomIndex;
         for (int i = 0; i < 10; i++){
-            randomIndex = random.nextInt(0) + 2;
+            randomIndex = random.nextInt(4);
             EventPost eventPost = new EventPost(eventNames[randomIndex], "Description",
-                    "Author", new LatLng(30 + 1 * random.nextDouble(), -90 -1 * random.nextDouble()),
+                    "Author", new LatLng(30 + .5 * random.nextDouble(), -90 -.5 * random.nextDouble()),
                     eventTypes[randomIndex]);
             map.addMarker(new MarkerOptions().title(eventPost.getEventName()).
                     position(eventPost.getLocation())).setIcon(markerColors.get(eventPost.getEventType()));
         }
+
+        Log.d("Current", "Random Events posted");
 
     }
 }

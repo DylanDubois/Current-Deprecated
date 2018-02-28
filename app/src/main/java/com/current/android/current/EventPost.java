@@ -1,9 +1,20 @@
 package com.current.android.current;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -15,11 +26,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+
 /**
  * Created by duboi on 2/4/2018.
  */
 
-public class EventPost {
+public class EventPost extends AppCompatActivity{
 
     private static HashMap<String, BitmapDescriptor> markerColors = new HashMap<>();
     static {
@@ -56,12 +69,34 @@ public class EventPost {
                     title(event.getEventName()).icon(markerColors.get(event.getEventType())))
                     .setTag(event);
         }
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+    }
+
+    public static void displayEventWindow(Marker marker, FrameLayout frameLayout, Context context){
+        FrameLayout mainLayout = frameLayout;
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View customView = inflater.inflate(R.layout.map_popup_window, null);
+        final PopupWindow markerPopUp = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        markerPopUp.showAtLocation(mainLayout, Gravity.CENTER,0,0);
+        markerPopUp.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        markerPopUp.setOutsideTouchable(true);
+
+        Button windowButton = customView.findViewById(R.id.popup_close_button);
+        TextView eventNameText = (TextView) customView.findViewById(R.id.eventNameText);
+        TextView eventDescriptionText = (TextView) customView.findViewById(R.id.eventDescriptionText);
+        TextView eventTypeText = (TextView) customView.findViewById(R.id.eventTypeText);
+
+        EventPost eventPost = (EventPost) marker.getTag();
+        eventNameText.setText(marker.getTitle());
+        eventDescriptionText.setText(eventPost.getEventDescription());
+        eventTypeText.setText(eventPost.getEventType());
+
+        windowButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onMarkerClick(Marker marker) {
-                Log.d("Current", "Event clicked! name = " + marker.getTitle());
-                marker.showInfoWindow();
-                return false;
+            public void onClick(View v) {
+                Log.d("Current", "Popupwindow button pressed!");
+                markerPopUp.dismiss();
             }
         });
     }

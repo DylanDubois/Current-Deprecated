@@ -6,6 +6,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -13,10 +16,19 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.EventLog;
 import android.util.Log;
+import android.view.FrameMetrics;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -105,12 +117,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        if (EventPost.eventsArray.size() > 0){
-            Log.d("Current", "EventsArray != null");
-            EventPost.placeEventMarkers(mMap);
-        }
+        //Tester.postRandomEvents(mMap);
+        // Places all stored markers when called map is ready.
+        EventPost.placeEventMarkers(mMap);
+        initMarkerListener();
         getCurrentUserLocation();
+
     }
 
     @Override
@@ -118,6 +130,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onResume();
         Log.d("Current", "resume() Called");
         getCurrentUserLocation();
+    }
+
+    public void initMarkerListener(){
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                Log.d("Current", "Marker Clicked: " + marker.getTitle());
+
+                // TEST!!
+                EventPost.displayEventWindow(marker, (FrameLayout) findViewById(R.id.map),
+                        getApplicationContext());
+
+                return false;
+            }
+        });
     }
 
 
