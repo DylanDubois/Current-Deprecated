@@ -28,8 +28,8 @@
 
             <TextView
                 android:id="@+id/eventTypeText"
-                android:layout_width="0dp"
-                android:layout_height="49dp"
+                android:layout_width="162dp"
+                android:layout_height="0dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
@@ -37,10 +37,8 @@
                 android:text="@string/event_type"
                 android:textColor="@color/common_google_signin_btn_text_dark_default"
                 app:layout_constraintBottom_toTopOf="@+id/eventDescriptionText"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toStartOf="@+id/authorNameText"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventNameText"
                 app:layout_constraintVertical_bias="0.051" />
@@ -84,6 +82,19 @@
                 app:layout_constraintBottom_toTopOf="@+id/popup_close_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/authorNameText"
+                android:layout_width="157dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/author_name_text"
+                android:textColor="@color/common_google_signin_btn_text_dark_pressed"
+                app:layout_constraintBottom_toTopOf="@+id/eventDescriptionText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eventNameText" />
         </android.support.constraint.ConstraintLayout>
 
     </FrameLayout>

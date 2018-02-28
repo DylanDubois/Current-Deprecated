@@ -9,6 +9,7 @@
     <string name="event_type">Event Type</string>
     <string name="cancel">Cancel</string>
     <string name="close_text">Close</string>
+    <string name="author_name_text">Author</string>
     <string-array name="event_types">
         <item>Academic</item>
         <item>Entertainment</item>

@@ -86,11 +86,13 @@ public class EventPost extends AppCompatActivity{
         TextView eventNameText = (TextView) customView.findViewById(R.id.eventNameText);
         TextView eventDescriptionText = (TextView) customView.findViewById(R.id.eventDescriptionText);
         TextView eventTypeText = (TextView) customView.findViewById(R.id.eventTypeText);
+        TextView authorNameText = (TextView) customView.findViewById(R.id.authorNameText);
 
         EventPost eventPost = (EventPost) marker.getTag();
-        eventNameText.setText(marker.getTitle());
-        eventDescriptionText.setText(eventPost.getEventDescription());
-        eventTypeText.setText(eventPost.getEventType());
+        eventNameText.setText("Event Name: \n" + marker.getTitle());
+        eventDescriptionText.setText("Description: \n" +eventPost.getEventDescription());
+        eventTypeText.setText("Event Type: \n" + eventPost.getEventType());
+        authorNameText.setText("Author:\n" + eventPost.getAuthor());
 
         windowButton.setOnClickListener(new View.OnClickListener() {
             @Override
