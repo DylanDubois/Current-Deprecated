@@ -50,6 +50,7 @@ public class EventPost extends AppCompatActivity{
     private String author;
     private LatLng location;
     private String eventType;
+    private float eventRatings, numberOfVotes;
     public static ArrayList<EventPost> eventsArray = new ArrayList<>();
 
 
@@ -69,38 +70,6 @@ public class EventPost extends AppCompatActivity{
                     title(event.getEventName()).icon(markerColors.get(event.getEventType())))
                     .setTag(event);
         }
-    }
-
-    public static void displayEventWindow(Marker marker, FrameLayout frameLayout, Context context){
-        FrameLayout mainLayout = frameLayout;
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
-        View customView = inflater.inflate(R.layout.map_popup_window, null);
-        final PopupWindow markerPopUp = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        markerPopUp.showAtLocation(mainLayout, Gravity.CENTER,0,0);
-        markerPopUp.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        markerPopUp.setOutsideTouchable(true);
-
-        Button windowButton = customView.findViewById(R.id.popup_close_button);
-        TextView eventNameText = (TextView) customView.findViewById(R.id.eventNameText);
-        TextView eventDescriptionText = (TextView) customView.findViewById(R.id.eventDescriptionText);
-        TextView eventTypeText = (TextView) customView.findViewById(R.id.eventTypeText);
-        TextView authorNameText = (TextView) customView.findViewById(R.id.authorNameText);
-
-        EventPost eventPost = (EventPost) marker.getTag();
-        eventNameText.setText("Event Name: \n" + marker.getTitle());
-        eventDescriptionText.setText("Description: \n" +eventPost.getEventDescription());
-        eventTypeText.setText("Event Type: \n" + eventPost.getEventType());
-        authorNameText.setText("Author:\n" + eventPost.getAuthor());
-
-        windowButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("Current", "Popupwindow button pressed!");
-                markerPopUp.dismiss();
-            }
-        });
     }
 
 
@@ -144,5 +113,24 @@ public class EventPost extends AppCompatActivity{
         this.location = location;
     }
 
+    public float getEventRatings() {
+        return eventRatings;
+    }
+
+    public void setEventRatings(float eventRatings) {
+        this.eventRatings = eventRatings;
+    }
+
+    public float getNumberOfVotes() {
+        return numberOfVotes;
+    }
+
+    public void setNumberOfVotes(float numberOfVotes) {
+        this.numberOfVotes = numberOfVotes;
+    }
+
+    public float getEventStars(){
+        return eventRatings / numberOfVotes;
+    }
 
 }

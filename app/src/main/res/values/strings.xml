@@ -10,6 +10,8 @@
     <string name="cancel">Cancel</string>
     <string name="close_text">Close</string>
     <string name="author_name_text">Author</string>
+    <string name="down_vote_text">DownVote</string>
+    <string name="up_vote_text">UpVote</string>
     <string-array name="event_types">
         <item>Academic</item>
         <item>Entertainment</item>

@@ -139,7 +139,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d("Current", "Marker Clicked: " + marker.getTitle());
 
                 // TEST!!
-                EventPost.displayEventWindow(marker, (FrameLayout) findViewById(R.id.map),
+                PopupWindowCreator.createPopUpWindow(marker, (FrameLayout) findViewById(R.id.map),
                         getApplicationContext());
 
                 return false;
