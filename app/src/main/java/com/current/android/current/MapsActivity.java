@@ -117,7 +117,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        //Tester.postRandomEvents(mMap);
+        Tester.postRandomEvents(mMap);
         // Places all stored markers when called map is ready.
         EventPost.placeEventMarkers(mMap);
         initMarkerListener();

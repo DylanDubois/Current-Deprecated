@@ -47,11 +47,13 @@ public class Tester {
         int randomIndex;
         for (int i = 0; i < 10; i++){
             randomIndex = random.nextInt(4);
-            EventPost eventPost = new EventPost(eventNames[randomIndex], "Description",
+            EventPost event = new EventPost(eventNames[randomIndex], "Description",
                     "Author", new LatLng(30 + .5 * random.nextDouble(), -90 -.5 * random.nextDouble()),
                     eventTypes[randomIndex]);
-            map.addMarker(new MarkerOptions().title(eventPost.getEventName()).
-                    position(eventPost.getLocation())).setIcon(markerColors.get(eventPost.getEventType()));
+            map.addMarker(new MarkerOptions().position(event.getLocation()).
+                    title(event.getEventName()).icon(markerColors.get(event.getEventType())))
+                    .setTag(event);
+            //Log.d("Current", "Event Description: " + eventPost.getEventDescription());
         }
 
         Log.d("Current", "Random Events posted");
