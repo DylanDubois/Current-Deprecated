@@ -100,6 +100,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 Log.d("Current", "Settings Clicked");
+                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                finish();
+                startActivity(intent);
             }
         });
     }

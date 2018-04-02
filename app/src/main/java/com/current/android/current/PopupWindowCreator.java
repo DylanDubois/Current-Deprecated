@@ -41,7 +41,6 @@ public class PopupWindowCreator {
             TextView authorNameText = (TextView) customView.findViewById(R.id.authorNameText);
 
             EventPost eventPost = (EventPost) marker.getTag();
-            Log.d("Current", "Event Description: " + eventPost.getEventDescription());
             eventNameText.setText("Event Name: \n" + marker.getTitle());
             eventDescriptionText.setText("Description: \n" +eventPost.getEventDescription());
             eventTypeText.setText("Event Type: \n" + eventPost.getEventType());

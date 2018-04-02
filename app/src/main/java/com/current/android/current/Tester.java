@@ -53,7 +53,6 @@ public class Tester {
             map.addMarker(new MarkerOptions().position(event.getLocation()).
                     title(event.getEventName()).icon(markerColors.get(event.getEventType())))
                     .setTag(event);
-            //Log.d("Current", "Event Description: " + eventPost.getEventDescription());
         }
 
         Log.d("Current", "Random Events posted");
