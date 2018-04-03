@@ -226,4 +226,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
     }
+    // TODO: add onPause method to handle pausing of the app. this should store all necessary data
+    // TODO: in order to resume properly.
+
+
 }
