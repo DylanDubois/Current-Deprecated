@@ -6,21 +6,29 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.util.EventLog;
 import android.util.Log;
+import android.view.FrameMetrics;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.FrameLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,7 +40,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -53,42 +60,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private final float MIN_DISTANCE = 2;
     private final float DEFAULT_ZOOM = 15;
     private EventPost eventTest;
-    private ArrayList<EventPost> mEventPostArrayList = new ArrayList<>();
-    Adapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-
-        //Recycler View Init
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new Adapter(recyclerView,this,mEventPostArrayList);
-        recyclerView.setAdapter(mAdapter);
-        mAdapter.setLoadMoreI(new LoadMoreI() {
-            @Override
-            public void onLoadMore() {
-                if(mEventPostArrayList.size()<=20){
-                    mEventPostArrayList.add(null);
-                    mAdapter.notifyItemInserted(mEventPostArrayList.size()-1);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mEventPostArrayList.remove(mEventPostArrayList.size()-1);
-                            mAdapter.notifyItemRemoved(mEventPostArrayList.size()-1);
-                            for(int i=0;i<mEventPostArrayList.size();i++){
-                                mEventPostArrayList.add(EventPost.eventsArray.get(i));
-                            }
-                            mAdapter.notifyDataSetChanged();
-                            mAdapter.setLoaded();
-                        }
-                    },5000);
-                }else{
-                    Toast.makeText(MapsActivity.this,"No more events to display", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -99,9 +75,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 Log.d("Current", "Events Clicked");
-                Intent intent = new Intent(getApplicationContext(),EventListActivity.class);
-                finish();
-                startActivity(intent);
             }
         });
 
@@ -127,6 +100,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 Log.d("Current", "Settings Clicked");
+                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                finish();
+                startActivity(intent);
             }
         });
     }
@@ -144,12 +120,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        if (EventPost.eventsArray.size() > 0){
-            Log.d("Current", "EventsArray != null");
-            EventPost.placeEventMarkers(mMap);
-        }
+        Tester.postRandomEvents(mMap);
+        // Places all stored markers when called map is ready.
+        EventPost.placeEventMarkers(mMap);
+        initMarkerListener();
         getCurrentUserLocation();
+
     }
 
     @Override
@@ -157,6 +133,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onResume();
         Log.d("Current", "resume() Called");
         getCurrentUserLocation();
+    }
+
+    public void initMarkerListener(){
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                Log.d("Current", "Marker Clicked: " + marker.getTitle());
+
+                // TEST!!
+                PopupWindowCreator.createPopUpWindow(marker, (FrameLayout) findViewById(R.id.map),
+                        getApplicationContext());
+
+                return false;
+            }
+        });
     }
 
 
@@ -235,4 +226,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
     }
+    // TODO: add onPause method to handle pausing of the app. this should store all necessary data
+    // TODO: in order to resume properly.
+
+
 }

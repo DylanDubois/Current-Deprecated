@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Current!</string>
+    <string name="app_name">Current</string>
     <string name="title_activity_maps">Current</string>
     <string name="post_text">Post</string>
     <string name="settings_text">Settings</string>
@@ -12,6 +12,11 @@
     <string name="author_name_text">Author</string>
     <string name="down_vote_text">DownVote</string>
     <string name="up_vote_text">UpVote</string>
+    <string name="email_text">Email</string>
+    <string name="password_text">Password</string>
+    <string name="login_text">Login</string>
+    <string name="register_text">Register</string>
+
     <string-array name="event_types">
         <item>Academic</item>
         <item>Entertainment</item>
