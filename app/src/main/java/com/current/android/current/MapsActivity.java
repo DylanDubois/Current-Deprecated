@@ -5,6 +5,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -34,12 +35,17 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -51,6 +57,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationManager locationManager;
     private LocationListener locationListener;
 
+    public static String userName;
+
 
     // Change to network on mobile
     private String LOCATION_PROVIDER = LocationManager.GPS_PROVIDER;
@@ -61,10 +69,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private final float DEFAULT_ZOOM = 15;
     private EventPost eventTest;
 
+    public static ArrayList<EventPost> eventsArray = new ArrayList<>();
+
+    public static HashMap<String, BitmapDescriptor> markerColors = new HashMap<>();
+    private DatabaseReference databaseReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        createColorsHash();
+
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -84,9 +100,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v) {
                 Log.d("Current", "Post Clicked");
                 Intent intent = new Intent(getApplicationContext(), PostActivity.class);
-                if (userLocation != null){
-                    intent.putExtra("USER_LONGITUDE",userLocation.getLongitude());
-                    intent.putExtra("USER_LATITUDE",userLocation.getLatitude());
+                if (userLocation != null) {
+                    intent.putExtra("USER_LONGITUDE", userLocation.getLongitude());
+                    intent.putExtra("USER_LATITUDE", userLocation.getLatitude());
                 }
                 finish();
                 startActivity(intent);
@@ -105,6 +121,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 startActivity(intent);
             }
         });
+        setupUserName();
     }
 
 
@@ -135,7 +152,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getCurrentUserLocation();
     }
 
-    public void initMarkerListener(){
+    public void initMarkerListener() {
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -150,8 +167,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+    // receives from already registered user.
+    public void setupUserName() {
+        SharedPreferences prefs = getSharedPreferences(UserRegistrationActivity.SETTINGS_PREFS, MODE_PRIVATE);
+        userName = prefs.getString(UserRegistrationActivity.USERNAME_KEY, null);
+        if (userName == null) userName = "Anonymous";
+        Log.d("Current", "Username: " + userName);
 
-    private Location userLocation;
+    }
+
+    private static Location userLocation;
 
     private void getCurrentUserLocation() {
         //Log.d("Current", "getCurrentUserLocation() Called");
@@ -195,18 +220,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         locationManager.requestLocationUpdates(LOCATION_PROVIDER, MIN_TIME, MIN_DISTANCE, locationListener);
-        if (mMap != null){
+        if (mMap != null) {
             Log.d("Current", "Map != null");
             userLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            //if (userLocation == null) return;
             Log.d("Current Test", "Latitude = " + userLocation.getLatitude()
                     + "\nLongitude = " + userLocation.getLongitude());
             //mMap.setMyLocationEnabled(true);
             LatLngBounds userBounds = new LatLngBounds(new LatLng(userLocation.getLatitude() - 0.05,
-                    userLocation.getLongitude() -0.05),
+                    userLocation.getLongitude() - 0.05),
                     new LatLng(userLocation.getLatitude() + 0.05,
-                            userLocation.getLongitude() +0.05));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userBounds.getCenter(),DEFAULT_ZOOM));
-
+                            userLocation.getLongitude() + 0.05));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userBounds.getCenter(), DEFAULT_ZOOM));
 
 
         }
@@ -217,14 +242,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == REQUEST_CODE){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.d("Current", "onReqPermission = granted");
-            }
-            else{
+            } else {
                 Log.d("Current", "Permission denied");
             }
         }
+    }
+
+    public void createColorsHash(){
+        Log.d("Current", "EventPost static called.");
+
+        // Assigns color to markers based on their event type.
+        markerColors.put("Academic", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+        markerColors.put("Entertainment", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+        markerColors.put("Social", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+        markerColors.put("Other", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+
     }
     // TODO: add onPause method to handle pausing of the app. this should store all necessary data
     // TODO: in order to resume properly.

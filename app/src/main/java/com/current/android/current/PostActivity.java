@@ -2,6 +2,7 @@ package com.current.android.current;
 
 import android.content.Intent;
 import android.location.Location;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Random;
 
@@ -25,6 +28,9 @@ public class PostActivity extends AppCompatActivity{
     private EditText eventDescription;
     private String eventType;
 
+    // database fields
+    private DatabaseReference databaseReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +41,8 @@ public class PostActivity extends AppCompatActivity{
             userLocation = new LatLng(extras.getDouble("USER_LATITUDE"),
                     extras.getDouble("USER_LONGITUDE"));
         }
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
         Log.d("Current", "User is at " + userLocation);
         eventTypeSpinner = (Spinner) findViewById(R.id.eventTypeSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -79,17 +87,23 @@ public class PostActivity extends AppCompatActivity{
     // Random location used for testing. Not permanent!!!
     Random random = new Random();
     private void postPressed(){
-        Log.d("Current","Event name: "+eventName.getText().toString() +
-                "\nEvent Description: "+eventDescription.getText().toString()+
-                "\nEvent Type: " + eventType);
+        Log.d("Current","postPressed called.");
         EventPost eventPost = new EventPost(eventName.getText().toString(),
                 // Remove!!!
-                eventDescription.getText().toString(), "Mike Mikerson", new LatLng(30 + (1) *random.nextDouble(), -91 + 1 *random.nextDouble()),
+                eventDescription.getText().toString(), MapsActivity.userName, new LatLng(30 + (1) *random.nextDouble(), -91 + 1 *random.nextDouble()),
                 eventType);
+        if (eventPost.getEventName().equals("") || eventPost.getEventDescription().equals("")){
+            showErrorDialog("Failed to post event. Please ensure a name and description are provided.");
+            return;
+        }
         Log.d("Current", "Event Posted? " + eventPost.getEventName());
 
         // Adds directly from post class only for testing purposes.
-        EventPost.eventsArray.add(eventPost);
+        MapsActivity.eventsArray.add(eventPost);
+
+        //stores in Firebase
+        databaseReference.child("events").push().setValue(eventPost);
+
 
         Intent postIntent = new Intent(getApplicationContext(), MapsActivity.class);
 
@@ -97,6 +111,12 @@ public class PostActivity extends AppCompatActivity{
         startActivity(postIntent);
 
 
+    }
+
+    private void showErrorDialog(String message){
+        new AlertDialog.Builder(this).setTitle("Sorry").setMessage(message)
+                .setPositiveButton(android.R.string.ok, null)
+                .setIcon(android.R.drawable.ic_dialog_alert).show();
     }
 
 }

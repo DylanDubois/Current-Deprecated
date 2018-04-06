@@ -32,42 +32,35 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
  * Created by duboi on 2/4/2018.
  */
 
-public class EventPost extends AppCompatActivity{
-
-    private static HashMap<String, BitmapDescriptor> markerColors = new HashMap<>();
-    static {
-        Log.d("Current", "EventPost static called.");
-
-        // Assigns color to markers based on their event type.
-        markerColors.put("Academic", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-        markerColors.put("Entertainment", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-        markerColors.put("Social", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
-        markerColors.put("Other", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-    }
-
-    private String eventName;
-    private String eventDescription;
-    private String author;
-    private LatLng location;
-    private String eventType;
-    private float eventRatings, numberOfVotes;
-    public static ArrayList<EventPost> eventsArray = new ArrayList<>();
-
+public class EventPost{
+    public String eventName;
+    public String eventDescription;
+    public String author;
+    //private LatLng location;
+    public String eventType;
+    //private float eventRatings = 0, numberOfVotes = 0;
+    public double latitude = 0, longitude = 0;
 
     public EventPost(String eventName, String eventDescription, String author, LatLng location, String type) {
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.author = author;
-        this.location = location;
+        latitude = location.latitude;
+        longitude = location.longitude;
         this.eventType = type;
+    }
+
+    public EventPost(){
+
     }
 
     public static void placeEventMarkers(GoogleMap mMap){
         EventPost event;
-        for (int i = 0; i < eventsArray.size(); i++){
-            event = eventsArray.get(i);
-            mMap.addMarker(new MarkerOptions().position(event.getLocation()).
-                    title(event.getEventName()).icon(markerColors.get(event.getEventType())))
+        for (int i = 0; i < MapsActivity.eventsArray.size(); i++){
+            event = MapsActivity.eventsArray.get(i);
+            mMap.addMarker(new MarkerOptions().
+                    position(new LatLng(event.getLatitude(), event.getLongitude())).
+                    title(event.getEventName()).icon(MapsActivity.markerColors.get(event.getEventType())))
                     .setTag(event);
         }
     }
@@ -77,60 +70,46 @@ public class EventPost extends AppCompatActivity{
         return eventType;
     }
 
-    public void setEventType(String eventType) {
-        this.eventType = eventType;
-    }
 
     public String getEventName() {
         return eventName;
     }
 
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
-    }
 
     public String getEventDescription() {
         return eventDescription;
-    }
-
-    public void setEventDescription(String eventDescription) {
-        this.eventDescription = eventDescription;
     }
 
     public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public LatLng getLocation() {
-        return location;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setLocation(LatLng location) {
-        this.location = location;
-    }
-
-    public float getEventRatings() {
-        return eventRatings;
-    }
-
-    public void setEventRatings(float eventRatings) {
-        this.eventRatings = eventRatings;
-    }
-
-    public float getNumberOfVotes() {
-        return numberOfVotes;
-    }
-
-    public void setNumberOfVotes(float numberOfVotes) {
-        this.numberOfVotes = numberOfVotes;
-    }
-
-    public float getEventStars(){
-        return eventRatings / numberOfVotes;
-    }
+//    public float getEventRatings() {
+//        return eventRatings;
+//    }
+//
+//    public void setEventRatings(float eventRatings) {
+//        this.eventRatings = eventRatings;
+//    }
+//
+//    public float getNumberOfVotes() {
+//        return numberOfVotes;
+//    }
+//
+//    public void setNumberOfVotes(float numberOfVotes) {
+//        this.numberOfVotes = numberOfVotes;
+//    }
+//
+//    public float getEventStars(){
+//        return eventRatings / numberOfVotes;
+//    }
 
 }
