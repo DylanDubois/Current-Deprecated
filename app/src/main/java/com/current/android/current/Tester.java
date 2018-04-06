@@ -50,7 +50,7 @@ public class Tester {
             EventPost event = new EventPost(eventNames[randomIndex], "Description",
                     "Author", new LatLng(30 + .5 * random.nextDouble(), -90 -.5 * random.nextDouble()),
                     eventTypes[randomIndex]);
-            map.addMarker(new MarkerOptions().position(event.getLocation()).
+            map.addMarker(new MarkerOptions().position(new LatLng(event.getLatitude(), event.getLongitude())).
                     title(event.getEventName()).icon(markerColors.get(event.getEventType())))
                     .setTag(event);
         }
