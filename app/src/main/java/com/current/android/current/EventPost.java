@@ -54,7 +54,13 @@ public class EventPost{
 
     }
 
+    @Override
+    public boolean equals(Object object){
+            return object instanceof EventPost && this.getEventName().equals(((EventPost) object).getEventName());
+    }
+
     public static void placeEventMarkers(GoogleMap mMap){
+        Log.d("Current", "Posting events...");
         EventPost event;
         for (int i = 0; i < MapsActivity.eventsArray.size(); i++){
             event = MapsActivity.eventsArray.get(i);
@@ -63,6 +69,13 @@ public class EventPost{
                     title(event.getEventName()).icon(MapsActivity.markerColors.get(event.getEventType())))
                     .setTag(event);
         }
+    }
+
+    public static void placeSingleMarker(GoogleMap map, EventPost event){
+        map.addMarker(new MarkerOptions().
+                position(new LatLng(event.getLatitude(), event.getLongitude())).
+                title(event.getEventName()).icon(MapsActivity.markerColors.get(event.getEventType())))
+                .setTag(event);
     }
 
 

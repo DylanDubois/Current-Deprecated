@@ -28,10 +28,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +48,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -53,10 +59,11 @@ import java.util.HashMap;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
+    private static GoogleMap mMap;
     private Button eventsButton;
     private Button postButton;
     private Button settingsButton;
+    private Spinner sortingSpinner;
 
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -78,7 +85,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static ArrayList<EventPost> eventsArray = new ArrayList<>();
 
     public static HashMap<String, BitmapDescriptor> markerColors = new HashMap<>();
-    private DatabaseReference databaseReference;
+
+    // FireBase fields
+    private static DatabaseReference databaseReference;
+    private static ChildEventListener databaseListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +125,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
         createColorsHash();
-
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -156,6 +166,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 startActivity(intent);
             }
         });
+
+        sortingSpinner = findViewById(R.id.sortingSpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.sorted_events, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sortingSpinner.setAdapter(adapter);
+        sortingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mMap.clear();
+                initEventsArray(parent.getItemAtPosition(position).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         setupUserName();
     }
 
@@ -172,9 +200,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        Tester.postRandomEvents(mMap);
+        //Tester.postRandomEvents(mMap);
+        initEventsArray("All");
         // Places all stored markers when called map is ready.
-        EventPost.placeEventMarkers(mMap);
+        //EventPost.placeEventMarkers(mMap);
         initMarkerListener();
         getCurrentUserLocation();
 
@@ -185,6 +214,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onResume();
         Log.d("Current", "resume() Called");
         getCurrentUserLocation();
+    }
+
+    //EventpostAdapter
+    public void onStart() {
+        super.onStart();
+        //initEventsArray();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference = databaseReference.child("events");
+
+    }
+
+    //cleans dbref to free resources
+    public void onStop() {
+        super.onStop();
+        databaseReference.removeEventListener(databaseListener);
+
     }
 
     public void initMarkerListener() {
@@ -208,6 +253,46 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         userName = prefs.getString(UserRegistrationActivity.USERNAME_KEY, null);
         if (userName == null) userName = "Anonymous";
         Log.d("Current", "Username: " + userName);
+
+    }
+    //reads event posts from Firebase, storing them into the default eventsArray
+    public static void initEventsArray(String type){
+        databaseListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                EventPost event = dataSnapshot.getValue(EventPost.class);
+                if (!eventsArray.contains(event)){
+                    eventsArray.add(event);
+                    Log.d("Current", "onChildAdded. There are " + eventsArray.size() +" events." +
+                            "Event name: " + event.getEventName());
+                }
+                EventPost.placeSingleMarker(mMap, event);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        if (type.equals("All"))
+            databaseReference.orderByChild("eventType").addChildEventListener(databaseListener);
+        else
+            databaseReference.orderByChild("eventType").equalTo(type).addChildEventListener(databaseListener);
 
     }
 
@@ -287,8 +372,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void createColorsHash(){
-        Log.d("Current", "EventPost static called.");
-
         // Assigns color to markers based on their event type.
         markerColors.put("Academic", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
         markerColors.put("Entertainment", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));

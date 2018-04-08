@@ -43,6 +43,7 @@ public class PostActivity extends AppCompatActivity{
         }
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
+        Log.d("Current", "There are " + MapsActivity.eventsArray.size() + " events.");
         Log.d("Current", "User is at " + userLocation);
         eventTypeSpinner = (Spinner) findViewById(R.id.eventTypeSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -90,7 +91,7 @@ public class PostActivity extends AppCompatActivity{
         Log.d("Current","postPressed called.");
         EventPost eventPost = new EventPost(eventName.getText().toString(),
                 // Remove!!!
-                eventDescription.getText().toString(), MapsActivity.userName, new LatLng(30 + (1) *random.nextDouble(), -91 + 1 *random.nextDouble()),
+                eventDescription.getText().toString(), MapsActivity.userName, userLocation,
                 eventType);
         if (eventPost.getEventName().equals("") || eventPost.getEventDescription().equals("")){
             showErrorDialog("Failed to post event. Please ensure a name and description are provided.");
