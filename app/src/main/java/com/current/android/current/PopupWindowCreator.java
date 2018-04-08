@@ -44,7 +44,7 @@ public class PopupWindowCreator {
             eventNameText.setText("Event Name: \n" + marker.getTitle());
             eventDescriptionText.setText("Description: \n" +eventPost.getEventDescription());
             eventTypeText.setText("Event Type: \n" + eventPost.getEventType());
-            authorNameText.setText("Author:\n" + eventPost.getAuthor());
+            authorNameText.setText("Posted by: \n" + eventPost.getAuthor());
 
             windowButton.setOnClickListener(new View.OnClickListener() {
                 @Override

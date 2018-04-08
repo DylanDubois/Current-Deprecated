@@ -131,7 +131,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 startActivity(intent);
             }
         });
-
+        //initializes the filter spinner. Markers are cleared if a type is selected.
         sortingSpinner = findViewById(R.id.sortingSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.sorted_events, android.R.layout.simple_spinner_item);
