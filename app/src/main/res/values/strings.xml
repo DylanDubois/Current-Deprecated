@@ -15,8 +15,10 @@
     <string name="email_text">Email</string>
     <string name="password_text">Password</string>
     <string name="login_text">Login</string>
+    <string name="logout_text">Logout</string>
     <string name="register_text">Register</string>
     <string name="posted_by_text">Posted by:</string>
+    <string name="avatar_text">Avatar</string>
 
     <string-array name="event_types">
         <item>Academic</item>
