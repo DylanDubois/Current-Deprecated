@@ -326,7 +326,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (mMap != null) {
             Log.d("Current", "Map != null");
             userLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            //if (userLocation == null) return;
+            if (userLocation == null) return;
             Log.d("Current Test", "Latitude = " + userLocation.getLatitude()
                     + "\nLongitude = " + userLocation.getLongitude());
             //mMap.setMyLocationEnabled(true);
