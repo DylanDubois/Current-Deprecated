@@ -1,15 +1,9 @@
 package com.current.android.current;
 
-import android.*;
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -17,22 +11,13 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.text.Layout;
-import android.util.EventLog;
 import android.util.Log;
-import android.view.FrameMetrics;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -43,7 +28,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -204,7 +191,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d("Current", "Marker Clicked: " + marker.getTitle());
 
                 // TEST!!
-                PopupWindowCreator.createPopUpWindow(marker, (FrameLayout) findViewById(R.id.map),
+                PopupWindowCreator.createMarkerPopup(marker, (FrameLayout) findViewById(R.id.map),
                         getApplicationContext());
 
                 return false;
@@ -214,9 +201,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     // receives from already registered user.
     public void setupUserName() {
-        SharedPreferences prefs = getSharedPreferences(UserRegistrationActivity.SETTINGS_PREFS, MODE_PRIVATE);
-        userName = prefs.getString(UserRegistrationActivity.USERNAME_KEY, null);
-        if (userName == null) userName = "Anonymous";
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        userName = user != null ? user.getDisplayName() : "Anonymous";
         Log.d("Current", "Username: " + userName);
 
     }
