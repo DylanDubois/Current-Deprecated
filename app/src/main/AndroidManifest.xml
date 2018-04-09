@@ -48,10 +48,10 @@
         <activity
             android:name=".SettingsActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".UserRegistrationActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
-
-        </activity>
+        <activity
+            android:name=".UserRegistrationActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+        <activity android:name=".ProfileCustomization"></activity>
     </application>
 
 </manifest>
