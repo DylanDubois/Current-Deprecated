@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -104,6 +106,8 @@ public class PostActivity extends AppCompatActivity{
 
         //stores in Firebase
         databaseReference.child("events").push().setValue(eventPost);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
 
 
         Intent postIntent = new Intent(getApplicationContext(), MapsActivity.class);

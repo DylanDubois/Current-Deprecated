@@ -23,14 +23,13 @@ import com.google.android.gms.maps.model.Marker;
 // sole function (no pun intended) of this class is to spawn a popupwindow when an event is clicked.
 public class PopupWindowCreator {
 
-    public static void createPopUpWindow(Marker marker, FrameLayout frameLayout, Context context){
-            FrameLayout mainLayout = frameLayout;
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+    public static void createMarkerPopup(Marker marker, FrameLayout frameLayout, Context context){
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View customView = inflater.inflate(R.layout.map_popup_window, null);
             final PopupWindow markerPopUp = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
 
-            markerPopUp.showAtLocation(mainLayout, Gravity.CENTER,0,0);
+            markerPopUp.showAtLocation(frameLayout, Gravity.CENTER,0,0);
             markerPopUp.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             markerPopUp.setOutsideTouchable(true);
 
@@ -54,5 +53,27 @@ public class PopupWindowCreator {
                 }
             });
         }
+
+    public static void createAvatarPopup(FrameLayout frameLayout, Context context){
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View customView = inflater.inflate(R.layout.avatar_popup_window, null);
+        final PopupWindow avatarPopup = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        avatarPopup.showAtLocation(frameLayout, Gravity.CENTER,0,0);
+        avatarPopup.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        avatarPopup.setOutsideTouchable(true);
+
+        Button windowButton = customView.findViewById(R.id.popup_close_button);
+
+
+        windowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Current", "Popupwindow button pressed!");
+                avatarPopup.dismiss();
+            }
+        });
+    }
     }
 

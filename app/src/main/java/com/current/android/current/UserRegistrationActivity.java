@@ -17,6 +17,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
 
 public class UserRegistrationActivity extends AppCompatActivity{
 
@@ -110,9 +113,21 @@ public class UserRegistrationActivity extends AppCompatActivity{
         });
     }
     public void saveUserName(){
+        FirebaseUser user = userAuth.getCurrentUser();
         String userName = usernameView.getText().toString();
-        SharedPreferences prefs = getSharedPreferences(SETTINGS_PREFS, 0);
-        prefs.edit().putString(USERNAME_KEY, userName).apply();
+        // saves username to FireBase account
+        if (user != null){
+            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest
+                    .Builder().setDisplayName(userName).build();
+            user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Log.d("Current", "Username saved.");
+                        //DatabaseReference ref = new
+                }}
+            });
+        }
     }
 
     private void showErrorDialog(String message){
