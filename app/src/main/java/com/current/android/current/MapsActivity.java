@@ -14,11 +14,13 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -64,7 +66,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private final long MIN_TIME = 500;
     private final float MIN_DISTANCE = 2;
     private final float DEFAULT_ZOOM = 15;
-    private EventPost eventTest;
 
     public static ArrayList<EventPost> eventsArray = new ArrayList<>();
 
@@ -79,34 +80,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        //Recycler View Init
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new Adapter(recyclerView,this,mEventPostArrayList);
-        recyclerView.setAdapter(mAdapter);
-        mAdapter.setLoadMoreI(new LoadMoreI() {
-            @Override
-            public void onLoadMore() {
-                if(mEventPostArrayList.size()<=20){
-                    mEventPostArrayList.add(null);
-                    mAdapter.notifyItemInserted(mEventPostArrayList.size()-1);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mEventPostArrayList.remove(mEventPostArrayList.size()-1);
-                            mAdapter.notifyItemRemoved(mEventPostArrayList.size()-1);
-                            for(int i=0;i<mEventPostArrayList.size();i++){
-                                mEventPostArrayList.add(EventPost.eventsArray.get(i));
-                            }
-                            mAdapter.notifyDataSetChanged();
-                            mAdapter.setLoaded();
-                        }
-                    },5000);
-                }else{
-                    Toast.makeText(MapsActivity.this,"No more events to display", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+
 
         markerColors = createColorsHash();
 

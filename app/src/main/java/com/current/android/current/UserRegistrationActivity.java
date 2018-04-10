@@ -131,7 +131,7 @@ public class UserRegistrationActivity extends AppCompatActivity{
                         //DatabaseReference ref = new
                 }}
             });
-          // databaseReference.child("users").setValue(new User(userName, "Duck"));
+          databaseReference.child("users").child(user.getUid()).child("username").setValue(userName);
         }
     }
 
