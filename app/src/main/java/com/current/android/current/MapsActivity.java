@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -50,6 +51,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private LocationManager locationManager;
     private LocationListener locationListener;
+    private Adapter mAdapter;
+    private ArrayList<EventPost> mEventPostArrayList;
 
     public static String userName;
 
@@ -76,6 +79,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        //Recycler View Init
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter = new Adapter(recyclerView,this,mEventPostArrayList);
+        recyclerView.setAdapter(mAdapter);
+        mAdapter.setLoadMoreI(new LoadMoreI() {
+            @Override
+            public void onLoadMore() {
+                if(mEventPostArrayList.size()<=20){
+                    mEventPostArrayList.add(null);
+                    mAdapter.notifyItemInserted(mEventPostArrayList.size()-1);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mEventPostArrayList.remove(mEventPostArrayList.size()-1);
+                            mAdapter.notifyItemRemoved(mEventPostArrayList.size()-1);
+                            for(int i=0;i<mEventPostArrayList.size();i++){
+                                mEventPostArrayList.add(EventPost.eventsArray.get(i));
+                            }
+                            mAdapter.notifyDataSetChanged();
+                            mAdapter.setLoaded();
+                        }
+                    },5000);
+                }else{
+                    Toast.makeText(MapsActivity.this,"No more events to display", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         markerColors = createColorsHash();
 
@@ -83,10 +114,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        // Show the list of events
         eventsButton = findViewById(R.id.eventsButton);
         eventsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Log.d("Current", "Events Clicked");
                 Intent intent = new Intent(getApplicationContext(), EventsListActivity.class);
                 startActivity(intent);
@@ -106,8 +140,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 finish();
                 startActivity(intent);
-
-
             }
         });
 
