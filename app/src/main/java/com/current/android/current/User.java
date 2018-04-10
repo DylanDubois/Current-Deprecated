@@ -11,9 +11,8 @@ public class User {
 
     public User(){}
 
-    public User(String name, String av){
+    public User(String name){
         userName = name;
-        avatarType = av;
     }
 
     public String getUserName() {

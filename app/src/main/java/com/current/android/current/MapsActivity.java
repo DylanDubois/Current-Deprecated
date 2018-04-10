@@ -65,7 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public static ArrayList<EventPost> eventsArray = new ArrayList<>();
 
-    public static HashMap<String, BitmapDescriptor> markerColors = new HashMap<>();
+    public static HashMap<String, BitmapDescriptor> markerColors;
 
     // FireBase fields
     public static DatabaseReference databaseReference;
@@ -77,7 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        createColorsHash();
+        markerColors = createColorsHash();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -88,6 +88,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 Log.d("Current", "Events Clicked");
+                Intent intent = new Intent(getApplicationContext(), EventsListActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -202,7 +205,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // receives from already registered user.
     public void setupUserName() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        userName = user != null ? user.getDisplayName() : "Anonymous";
+        userName = ( user != null ) ? user.getDisplayName() : "Anonymous";
         Log.d("Current", "Username: " + userName);
 
     }
@@ -240,10 +243,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         };
+
         if (type.equals("All"))
-            databaseReference.orderByChild("eventType").addChildEventListener(databaseListener);
+            databaseReference
+                    .orderByChild("events")
+                    .addChildEventListener(databaseListener);
         else
-            databaseReference.orderByChild("eventType").equalTo(type).addChildEventListener(databaseListener);
+            databaseReference
+                    .orderByChild("eventType")
+                    .equalTo(type)
+                    .addChildEventListener(databaseListener);
 
     }
 
@@ -291,22 +300,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         locationManager.requestLocationUpdates(LOCATION_PROVIDER, MIN_TIME, MIN_DISTANCE, locationListener);
-        if (mMap != null) {
-            Log.d("Current", "Map != null");
-            userLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (userLocation == null) return;
-            Log.d("Current Test", "Latitude = " + userLocation.getLatitude()
-                    + "\nLongitude = " + userLocation.getLongitude());
-            //mMap.setMyLocationEnabled(true);
-            LatLngBounds userBounds = new LatLngBounds(new LatLng(userLocation.getLatitude() - 0.05,
-                    userLocation.getLongitude() - 0.05),
-                    new LatLng(userLocation.getLatitude() + 0.05,
-                            userLocation.getLongitude() + 0.05));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userBounds.getCenter(), DEFAULT_ZOOM));
+
+        if(mMap == null)
+            return;
 
 
-        }
+        Log.d("Current", "Map != null");
+        userLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+        if (userLocation == null)
+            return;
+
+        Log.d("Current Test",
+                "Latitude = " + userLocation.getLatitude()
+                + "\nLongitude = " + userLocation.getLongitude());
+
+        //mMap.setMyLocationEnabled(true);
+        LatLngBounds userBounds = new LatLngBounds(
+                new LatLng(
+                        userLocation.getLatitude() - 0.05,
+                        userLocation.getLongitude() - 0.05),
+                new LatLng(
+                        userLocation.getLatitude() + 0.05,
+                        userLocation.getLongitude() + 0.05));
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userBounds.getCenter(), DEFAULT_ZOOM));
     }
 
     @Override
@@ -322,13 +340,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public void createColorsHash(){
-        // Assigns color to markers based on their event type.
-        markerColors.put("Academic", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-        markerColors.put("Entertainment", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-        markerColors.put("Social", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
-        markerColors.put("Other", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-
+    public HashMap<String, BitmapDescriptor> createColorsHash(){
+        HashMap<String, BitmapDescriptor> colorsMap = new HashMap<>();
+        colorsMap.put("Academic", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+        colorsMap.put("Entertainment", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+        colorsMap.put("Social", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+        colorsMap.put("Other", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        return colorsMap;
     }
     // TODO: add onPause method to handle pausing of the app. this should store all necessary data
     // TODO: in order to resume properly.

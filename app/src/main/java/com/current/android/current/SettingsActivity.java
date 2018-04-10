@@ -69,8 +69,8 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d("Current", "Avatar pressed");
                 //PopupWindowCreator.createAvatarPopup((FrameLayout) findViewById(R.id.settings), getApplicationContext());
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                databaseReference.child("users").child(user.getUid()).setValue(new User("bill", "duck"));
+//                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//                databaseReference.child("users").child(user.getUid()).child("avatarType").setValue("Duck");
             }
         });
     }
