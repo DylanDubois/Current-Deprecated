@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class UserRegistrationActivity extends AppCompatActivity{
 
@@ -28,6 +29,8 @@ public class UserRegistrationActivity extends AppCompatActivity{
     private FirebaseAuth userAuth;
     private String email, password;
     public static final String SETTINGS_PREFS = "Settings", USERNAME_KEY = "username";
+
+    private DatabaseReference databaseReference;
 
 
     @Override
@@ -58,6 +61,7 @@ public class UserRegistrationActivity extends AppCompatActivity{
         });
 
         userAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
     }
 
@@ -127,6 +131,7 @@ public class UserRegistrationActivity extends AppCompatActivity{
                         //DatabaseReference ref = new
                 }}
             });
+          // databaseReference.child("users").setValue(new User(userName, "Duck"));
         }
     }
 

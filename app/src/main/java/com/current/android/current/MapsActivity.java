@@ -68,7 +68,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static HashMap<String, BitmapDescriptor> markerColors = new HashMap<>();
 
     // FireBase fields
-    private static DatabaseReference databaseReference;
+    public static DatabaseReference databaseReference;
     private static ChildEventListener databaseListener;
 
 

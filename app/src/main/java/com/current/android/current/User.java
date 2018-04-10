@@ -6,13 +6,14 @@ package com.current.android.current;
 
 public class User {
     public String userName;
-    public int age;
+    public String avatarType;
+
 
     public User(){}
 
-    public User(String name, int age){
+    public User(String name, String av){
         userName = name;
-        this.age = age;
+        avatarType = av;
     }
 
     public String getUserName() {
@@ -23,11 +24,11 @@ public class User {
         this.userName = userName;
     }
 
-    public int getAge() {
-        return age;
+    public String getAvatarType() {
+        return avatarType;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setAvatarType(String avatarType) {
+        this.avatarType = avatarType;
     }
 }

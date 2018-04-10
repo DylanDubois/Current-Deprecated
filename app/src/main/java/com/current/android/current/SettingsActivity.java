@@ -10,11 +10,15 @@ import android.widget.FrameLayout;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SettingsActivity extends AppCompatActivity {
 
     private Button loginButton,backButton, logoutButton, avatarButton;
-    public static FirebaseAnalytics firebaseAnalytics;
+    private DatabaseReference databaseReference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +30,7 @@ public class SettingsActivity extends AppCompatActivity {
         logoutButton = findViewById(R.id.logout_button);
         avatarButton = findViewById(R.id.avatar_button);
 
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +69,8 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d("Current", "Avatar pressed");
                 //PopupWindowCreator.createAvatarPopup((FrameLayout) findViewById(R.id.settings), getApplicationContext());
-                firebaseAnalytics.setUserProperty("user_avatar", "duck");
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                databaseReference.child("users").child(user.getUid()).setValue(new User("bill", "duck"));
             }
         });
     }
