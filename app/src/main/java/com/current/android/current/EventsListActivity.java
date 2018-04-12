@@ -3,6 +3,7 @@ package com.current.android.current;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -52,7 +53,7 @@ public class EventsListActivity extends AppCompatActivity {
         event_name_view = (TextView)findViewById(R.id.textView_name);
         event_des_view = (TextView)findViewById(R.id.textView_description);
         eventListView= (ListView)findViewById(R.id.listView_events);
-        color = (ImageView)findViewById(R.id.color_imageview);
+        color = (ImageView)findViewById(R.id.color_imageView);
         goBackButton = (Button)findViewById(R.id.go_back);
 
         goBackButton.setOnClickListener(new View.OnClickListener() {
