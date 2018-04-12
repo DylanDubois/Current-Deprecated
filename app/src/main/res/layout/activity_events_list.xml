@@ -3,18 +3,24 @@
     android:id="@+id/event_row"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorPrimaryDark"
+    >
 
     <Button
         android:id="@+id/go_back"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
         android:text="Back" />
 
     <ListView
         android:id="@+id/listView_events"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:divider="@color/colorAccent"
+        android:dividerHeight="4dp"
+        >
 
     </ListView>
 </LinearLayout>
