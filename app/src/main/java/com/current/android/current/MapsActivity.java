@@ -53,7 +53,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private Adapter mAdapter;
     private ArrayList<EventPost> mEventPostArrayList;
 
     public static String userName;
@@ -94,7 +93,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         eventsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Log.d("Current", "Events Clicked");
                 Intent intent = new Intent(getApplicationContext(), EventsListActivity.class);
                 startActivity(intent);
@@ -319,7 +317,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Log.d("Current Test",
                 "Latitude = " + userLocation.getLatitude()
-                + "\nLongitude = " + userLocation.getLongitude());
+                        + "\nLongitude = " + userLocation.getLongitude());
 
         //mMap.setMyLocationEnabled(true);
         LatLngBounds userBounds = new LatLngBounds(
