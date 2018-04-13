@@ -31,7 +31,6 @@ public class EventsListActivity extends AppCompatActivity {
         //TODO: instantiate all layout fields here
 
 
-
     }
 
     public void onStart() {
@@ -39,52 +38,14 @@ public class EventsListActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference = databaseReference.child("events");
 
-        initEventsArray();
+        //initEventsArray();
     }
 
-    public void onStop(){
+    public void onStop() {
         super.onStop();
 
         // Frees resources like MapsActivity
         databaseReference.removeEventListener(databaseListener);
     }
 
-    /*
-     *  This will search FireBase and fill an arraylist with new events.
-     */
-    public void initEventsArray(){
-        databaseListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot == null) return;
-                EventPost event = dataSnapshot.getValue(EventPost.class);
-                if (!eventsArray.contains(event)) eventsArray.add(event);
-
-                Log.d("Current", "Event found! Event name: " + event.getEventName());
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-        databaseReference.orderByChild("events").addChildEventListener(databaseListener);}
-    }
-
-
-
+}

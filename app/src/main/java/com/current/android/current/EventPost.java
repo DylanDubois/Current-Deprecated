@@ -41,6 +41,7 @@ public class EventPost{
     //private float eventRatings = 0, numberOfVotes = 0;
     public double latitude = 0, longitude = 0;
 
+
     public EventPost(String eventName, String eventDescription, String author, LatLng location, String type) {
         this.eventName = eventName;
         this.eventDescription = eventDescription;
