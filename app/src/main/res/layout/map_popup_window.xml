@@ -57,6 +57,7 @@
                 android:layout_marginStart="8dp"
                 android:background="@color/colorAccent"
                 android:text="@string/close_text"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

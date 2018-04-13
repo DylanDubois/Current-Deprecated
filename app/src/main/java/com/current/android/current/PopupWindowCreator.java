@@ -43,7 +43,9 @@ public class PopupWindowCreator {
             eventNameText.setText("Event Name: \n" + marker.getTitle());
             eventDescriptionText.setText("Description: \n" +eventPost.getEventDescription());
             eventTypeText.setText("Event Type: \n" + eventPost.getEventType());
-            authorNameText.setText("Posted by: \n" + eventPost.getAuthor());
+            long timeDiffInHours = (System.currentTimeMillis() - eventPost.getTimePosted()) / 3600000;
+            authorNameText.setText("Posted by " + eventPost.getAuthor()
+                    + "\n" + timeDiffInHours +" hours ago");
 
             windowButton.setOnClickListener(new View.OnClickListener() {
                 @Override

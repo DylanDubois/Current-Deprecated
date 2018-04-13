@@ -40,15 +40,17 @@ public class EventPost{
     public String eventType;
     //private float eventRatings = 0, numberOfVotes = 0;
     public double latitude = 0, longitude = 0;
+    public long timePosted;
 
 
-    public EventPost(String eventName, String eventDescription, String author, LatLng location, String type) {
+    public EventPost(String eventName, String eventDescription, String author, LatLng location, String type, long time) {
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.author = author;
         latitude = location.latitude;
         longitude = location.longitude;
         this.eventType = type;
+        timePosted = time;
     }
 
     public EventPost(){
@@ -106,5 +108,11 @@ public class EventPost{
         return longitude;
     }
 
+    public long getTimePosted() {
+        return timePosted;
+    }
 
+    public void setTimePosted(long timePosted) {
+        this.timePosted = timePosted;
+    }
 }

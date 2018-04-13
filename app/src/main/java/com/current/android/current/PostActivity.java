@@ -94,7 +94,7 @@ public class PostActivity extends AppCompatActivity{
         EventPost eventPost = new EventPost(eventName.getText().toString(),
                 // Remove!!!
                 eventDescription.getText().toString(), MapsActivity.userName, userLocation,
-                eventType);
+                eventType, System.currentTimeMillis());
         if (eventPost.getEventName().equals("") || eventPost.getEventDescription().equals("")){
             showErrorDialog("Failed to post event. Please ensure a name and description are provided.");
             return;
