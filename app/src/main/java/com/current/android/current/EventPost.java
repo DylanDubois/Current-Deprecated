@@ -106,24 +106,5 @@ public class EventPost{
         return longitude;
     }
 
-//    public float getEventRatings() {
-//        return eventRatings;
-//    }
-//
-//    public void setEventRatings(float eventRatings) {
-//        this.eventRatings = eventRatings;
-//    }
-//
-//    public float getNumberOfVotes() {
-//        return numberOfVotes;
-//    }
-//
-//    public void setNumberOfVotes(float numberOfVotes) {
-//        this.numberOfVotes = numberOfVotes;
-//    }
-//
-//    public float getEventStars(){
-//        return eventRatings / numberOfVotes;
-//    }
 
 }

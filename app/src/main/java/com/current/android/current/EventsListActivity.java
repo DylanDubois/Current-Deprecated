@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,6 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class EventsListActivity extends AppCompatActivity {
 
@@ -36,7 +38,7 @@ public class EventsListActivity extends AppCompatActivity {
     private Button goBackButton;
     private TextView event_name_view,event_des_view;
     private ImageView color;
-    private Adapter adapter;
+    private EventAdapter adapter;
     //ArrayList to store the vents
     public static ArrayList<EventPost> eventsArray = new ArrayList<>();
 
@@ -48,6 +50,8 @@ public class EventsListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_list);
+
+
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         event_name_view = (TextView)findViewById(R.id.textView_name);
@@ -72,10 +76,12 @@ public class EventsListActivity extends AppCompatActivity {
 
     }
 
+
     public void onStart() {
         super.onStart();
 
-        adapter = new Adapter(this,databaseReference,eventsArray);
+
+        adapter = new EventAdapter(this,databaseReference,eventsArray);
         eventListView.setAdapter(adapter);
         databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference = databaseReference.child("events");
