@@ -1,12 +1,10 @@
-
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/relative_layout"
-    android:background="@color/white"
+    android:background="@color/colorPrimary"
     android:gravity="top"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/textView_name"
@@ -17,7 +15,7 @@
         android:layout_toEndOf="@+id/color_imageView"
         android:gravity="center_vertical"
         android:text="@string/event_name"
-        android:textColor="@color/black"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
         android:textSize="15sp"
         android:textStyle="bold" />
 
@@ -31,14 +29,13 @@
         android:layout_toEndOf="@+id/color_imageView"
         android:gravity="center_vertical"
         android:text="@string/event_description"
-        android:textColor="@color/black"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
         android:textSize="15sp" />
 
     <ImageView
         android:id="@+id/color_imageView"
         android:layout_width="129dp"
         android:layout_height="108dp"
-        android:background="@color/gray"
-        />
+        android:background="@color/gray" />
 </RelativeLayout>
 

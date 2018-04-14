@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Handler;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -352,6 +353,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         colorsMap.put("Social", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
         colorsMap.put("Other", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         return colorsMap;
+    }
+
+    public static HashMap<String, Integer> createAvatarHash(){
+        HashMap<String, Integer> avatars = new HashMap<>();
+        avatars.put("Duck", R.mipmap.duck_avatar);
+        avatars.put("Panda", R.mipmap.panda_avatar);
+        avatars.put("Tiger", R.mipmap.tiger_avatar);
+
+        return avatars;
     }
     // TODO: add onPause method to handle pausing of the app. this should store all necessary data
     // TODO: in order to resume properly.

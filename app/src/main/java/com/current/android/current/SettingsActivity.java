@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -16,7 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private Button loginButton,backButton, logoutButton, avatarButton;
+    private Button loginButton,backButton, logoutButton, profileButton;
     private DatabaseReference databaseReference;
 
 
@@ -28,7 +26,7 @@ public class SettingsActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.login_button);
         backButton = findViewById(R.id.back_button);
         logoutButton = findViewById(R.id.logout_button);
-        avatarButton = findViewById(R.id.avatar_button);
+        profileButton = findViewById(R.id.avatar_button);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -64,13 +62,14 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        avatarButton.setOnClickListener(new View.OnClickListener() {
+        profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Current", "Avatar pressed");
+                Log.d("Current", "Profile Cust pressed");
                 //PopupWindowCreator.createAvatarPopup((FrameLayout) findViewById(R.id.settings), getApplicationContext());
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                databaseReference.child("users").child(user.getUid()).child("avatarType").setValue("Duck");
+                Intent intent = new Intent(getApplicationContext(), ProfileCustomization.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
