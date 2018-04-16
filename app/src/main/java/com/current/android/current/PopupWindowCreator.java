@@ -23,10 +23,12 @@ import com.google.android.gms.maps.model.Marker;
 // sole function (no pun intended) of this class is to spawn a popupwindow when an event is clicked.
 public class PopupWindowCreator {
 
+    private static PopupWindow markerPopUp;
+
     public static void createMarkerPopup(Marker marker, FrameLayout frameLayout, Context context){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View customView = inflater.inflate(R.layout.map_popup_window, null);
-            final PopupWindow markerPopUp = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT,
+            markerPopUp = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
 
             markerPopUp.showAtLocation(frameLayout, Gravity.CENTER,0,0);

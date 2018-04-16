@@ -45,7 +45,6 @@ public class PostActivity extends AppCompatActivity{
         }
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        Log.d("Current", "There are " + MapsActivity.eventsArray.size() + " events.");
         Log.d("Current", "User is at " + userLocation);
         eventTypeSpinner = (Spinner) findViewById(R.id.eventTypeSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -87,8 +86,6 @@ public class PostActivity extends AppCompatActivity{
             }
         });
     }
-    // Random location used for testing. Not permanent!!!
-    Random random = new Random();
     private void postPressed(){
         Log.d("Current","postPressed called.");
         EventPost eventPost = new EventPost(eventName.getText().toString(),
@@ -102,7 +99,6 @@ public class PostActivity extends AppCompatActivity{
         Log.d("Current", "Event Posted? " + eventPost.getEventName());
 
         // Adds directly from post class only for testing purposes.
-        MapsActivity.eventsArray.add(eventPost);
 
         //stores in Firebase
         databaseReference.child("events").push().setValue(eventPost);

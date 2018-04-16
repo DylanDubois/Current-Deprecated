@@ -48,14 +48,13 @@ import java.util.HashMap;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static GoogleMap mMap;
-    private Button eventsButton;
-    private Button postButton;
-    private Button settingsButton;
+    private ImageButton eventsButton;
+    private ImageButton postButton;
+    private ImageButton settingsButton;
     private Spinner sortingSpinner;
 
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private ArrayList<EventPost> mEventPostArrayList;
 
     public static String userName;
 
@@ -68,7 +67,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private final float MIN_DISTANCE = 2;
     private final float DEFAULT_ZOOM = 15;
 
-    public static ArrayList<EventPost> eventsArray = new ArrayList<>();
 
     public static HashMap<String, BitmapDescriptor> markerColors;
 
@@ -221,11 +219,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 EventPost event = dataSnapshot.getValue(EventPost.class);
-                if (!eventsArray.contains(event)){
-                    eventsArray.add(event);
-                    Log.d("Current", "onChildAdded. There are " + eventsArray.size() +" events." +
-                            "Event name: " + event.getEventName());
-                }
+
                 EventPost.placeSingleMarker(mMap, event);
             }
 
