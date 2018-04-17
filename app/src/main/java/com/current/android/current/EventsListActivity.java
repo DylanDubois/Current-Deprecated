@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -35,7 +36,7 @@ import java.util.HashMap;
 public class EventsListActivity extends AppCompatActivity {
 
     private ListView eventListView;
-    private Button goBackButton;
+    private ImageButton goBackButton;
     private TextView event_name_view,event_des_view;
     private ImageView color;
     private EventAdapter adapter;
@@ -58,7 +59,7 @@ public class EventsListActivity extends AppCompatActivity {
         event_des_view = (TextView)findViewById(R.id.textView_description);
         eventListView= (ListView)findViewById(R.id.listView_events);
         color = (ImageView)findViewById(R.id.color_imageView);
-        goBackButton = (Button)findViewById(R.id.go_back);
+        goBackButton = (ImageButton)findViewById(R.id.go_back);
 
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
