@@ -59,7 +59,7 @@ public class EventsListActivity extends AppCompatActivity {
         event_des_view = (TextView)findViewById(R.id.textView_description);
         eventListView= (ListView)findViewById(R.id.listView_events);
         color = (ImageView)findViewById(R.id.color_imageView);
-        goBackButton = (ImageButton)findViewById(R.id.go_back);
+        goBackButton = (ImageButton)findViewById(R.id.go_back_ImageButton);
 
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
