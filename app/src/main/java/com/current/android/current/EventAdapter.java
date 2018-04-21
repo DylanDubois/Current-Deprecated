@@ -102,7 +102,6 @@ public class EventAdapter extends BaseAdapter {
             holder.event_name = (TextView) convertView.findViewById(R.id.textView_name);
             holder.event_des = (TextView) convertView.findViewById(R.id.textView_description);
             holder.params = (RelativeLayout.LayoutParams) holder.event_name.getLayoutParams();
-            holder.color = (ImageView) convertView.findViewById(R.id.color_imageView);
             convertView.setTag(holder);
 
         }
