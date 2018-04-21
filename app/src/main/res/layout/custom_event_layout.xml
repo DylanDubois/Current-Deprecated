@@ -6,35 +6,34 @@
     android:gravity="top"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_gravity="start"
-        android:layout_toEndOf="@+id/color_imageView"
-        android:gravity="center_vertical"
-        android:text="@string/event_name"
-        android:textColor="@color/common_google_signin_btn_text_dark_default"
-        android:textSize="15sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/textView_description"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/textView_name"
-        android:layout_gravity="start"
-        android:layout_toEndOf="@+id/color_imageView"
-        android:gravity="center_vertical"
-        android:text="@string/event_description"
-        android:textColor="@color/common_google_signin_btn_text_dark_default" />
+        android:layout_height="113dp"
+        android:background="@color/colorPrimary">
 
-    <ImageView
-        android:id="@+id/color_imageView"
-        android:layout_width="114dp"
-        android:layout_height="108dp"
-         />
+        <TextView
+            android:id="@+id/textView_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="start"
+            android:gravity="center_vertical"
+            android:text="@string/event_name"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView_description"
+            android:layout_width="match_parent"
+            android:layout_height="92dp"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/textView_name"
+            android:layout_gravity="start"
+            android:gravity="center_vertical"
+            android:text="@string/event_description"
+            android:textColor="@color/common_google_signin_btn_text_dark_default" />
+    </RelativeLayout>
+
 </RelativeLayout>
 

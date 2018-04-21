@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -40,12 +41,12 @@ import java.util.List;
 public class EventsListActivity extends AppCompatActivity {
 
     private ListView eventListView;
-    private ImageButton goBackButton, searchButton, filterButton;
+    private ImageButton goBackButton,searchButton,filterButton;
     private TextView event_name_view,event_des_view;
     private ImageView color;
     private EventAdapter adapter;
 
-    private CharSequence[] types = new CharSequence[]{"Academic","Entertainment","Social","other"};
+    private CharSequence[] types = new CharSequence[]{"Academic","Entertainment","Social","Other"};
     private boolean[] checked = new boolean[]{false,false,false,false};
 
     //ArrayList to store the vents
@@ -66,10 +67,9 @@ public class EventsListActivity extends AppCompatActivity {
         event_name_view = (TextView)findViewById(R.id.textView_name);
         event_des_view = (TextView)findViewById(R.id.textView_description);
         eventListView= (ListView)findViewById(R.id.listView_events);
-        color = (ImageView)findViewById(R.id.color_imageView);
         goBackButton = (ImageButton)findViewById(R.id.go_back_ImageButton);
-        searchButton = (ImageButton)findViewById(R.id.search_ImageButton);
         filterButton = (ImageButton)findViewById(R.id.filter_ImageButton);
+        searchButton = (ImageButton)findViewById(R.id.search_ImageButton);
 
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +91,7 @@ public class EventsListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(getApplicationContext(),types[which],Toast.LENGTH_LONG).show();
+
                     }
                 });
                 builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
@@ -103,6 +104,8 @@ public class EventsListActivity extends AppCompatActivity {
                 alertDialog.show();
             }
         });
+
+
     }
 
     public void onStart() {
