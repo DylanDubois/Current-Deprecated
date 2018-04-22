@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -45,8 +46,9 @@ public class EventsListActivity extends AppCompatActivity {
     private TextView event_name_view,event_des_view;
     private ImageView color;
     private EventAdapter adapter;
+    private ChildEventListener mListener;
 
-    private CharSequence[] types = new CharSequence[]{"Academic","Entertainment","Social","Other"};
+    private CharSequence[] types = new CharSequence[]{"All","Academic","Entertainment","Social","Other"};
     private boolean[] checked = new boolean[]{false,false,false,false};
 
     //ArrayList to store the vents
@@ -91,13 +93,17 @@ public class EventsListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(getApplicationContext(),types[which],Toast.LENGTH_LONG).show();
-
                     }
                 });
-                builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                builder.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        filter(parent.getItemAtPosition(position).toString());
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
                     }
                 });
                 AlertDialog alertDialog = builder.create();
@@ -123,6 +129,44 @@ public class EventsListActivity extends AppCompatActivity {
         super.onStop();
         // Frees resources like MapsActivity
         adapter.cleanup();
+    }
+    public void filter(String type){
+        mListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                EventPost event = dataSnapshot.getValue(EventPost.class);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        };
+        if (type.equals("All"))
+            databaseReference
+                    .orderByChild("events")
+                    .addChildEventListener(mListener);
+        else
+            databaseReference
+                    .orderByChild("eventType")
+                    .equalTo(type)
+                    .addChildEventListener(mListener);
     }
 
     }
